@@ -404,7 +404,7 @@ class GithubTestCase(unittest.TestCase):
 
     def test_user_events(self):
         self.service.user('foo').events().get(page=2)
-        self.expect('GET', '/users/foo/events', {'page': 2, 'type': 'all'})
+        self.expect('GET', '/users/foo/events', {'page': 2})
 
         self.assertRaises(base.MethodNotSupported,
                           self.service.user('foo').events().create)
