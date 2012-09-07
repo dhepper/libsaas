@@ -64,7 +64,7 @@ class UserEmails(base.HierarchicalResource):
 
         return request, parsers.parse_empty
 
-class UserEvents(resource.GitHubResource):
+class EventsBase(resource.GitHubResource):
 
     path = 'events'
 
@@ -80,6 +80,16 @@ class UserEvents(resource.GitHubResource):
 
     def create(self, *args, **kwargs):
         raise base.MethodNotSupported()
+
+class UserEvents(EventsBase):
+
+    def public(self):
+        return PublicUserEvents(self.parent)
+
+
+class PublicUserEvents(EventsBase):
+
+    path = 'events/public'
 
 
 class UsersBase(resource.GitHubResource):
@@ -177,7 +187,7 @@ class User(UsersBase):
         return UserRepos(self)
 
     @base.resource(UserEvents)
-    def events(self, page=None, per_page=None):
+    def events(self):
         """
         Return the resource corresponding to all events of this user.
         """

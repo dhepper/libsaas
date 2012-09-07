@@ -412,6 +412,16 @@ class GithubTestCase(unittest.TestCase):
         self.assertRaises(base.MethodNotSupported,
                           self.service.user('foo').events().update, 'x')
 
+    def test_public_user_events(self):
+        self.service.user('foo').events().public().get(page=2)
+        self.expect('GET', '/users/foo/events/public', {'page': 2})
+
+        self.assertRaises(base.MethodNotSupported,
+                          self.service.user('foo').events().create)
+
+        self.assertRaises(base.MethodNotSupported,
+                          self.service.user('foo').events().update, 'x')
+
     def test_authorizations(self):
         self.service.authorizations().get()
         self.expect('GET', '/authorizations')
